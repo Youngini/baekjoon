@@ -3,34 +3,26 @@
 int main()
 {
 	int N;
-	int length;
-	int n = 0;
+	int n, j, score; // n은 O 갯수에 따른 점수, j는 문자열의 인덱스, score은 총점
 	char test[80];
-	int score = 0;
 	scanf("%d", &N);
+
 	for (int i = 0; i < N; i++)
 	{
-		int j = 1;
-		while (strcmp(test[j], '\0') != 0)
+		j = 0;
+		n = 0;
+		score = 0;
+		scanf("%s", &test);
+		while (test[j]!='\0') // 문자열 끝엔 무조건 '\0'이 들어감
 		{
-			if (strcmp(test[j], 'O') == 0)
-			{
-				if (strcmp(test[j - 1], 'O') != 0)
-				{
-					n = 1;
-					score += n;
-				}
-				else
-				{
-					score += (++n);
-				}
-			}
-			
+			if (test[j] == 'O')
+				score += (++n);
+			else
+				n = 0;
+			j++;
 		}
+		printf("%d\n", score);
+		
 	}
-
-
-	printf("%s %d", test, length);
-
 	return 0;
 }
