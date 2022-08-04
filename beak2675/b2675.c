@@ -12,9 +12,9 @@ int main()
 		scanf("%d", &R);
 		scanf("%s", &S);
 		int j = 0;
-		while (S[j] != '\0')
+		while (S[j] != '\0') // 문자열 끝은 항상 '\0'
 		{
-			for (int k = 0; k < R; k++)
+			for (int k = 0; k < R; k++) // 문자 R만큼 반복
 				printf("%c", S[j]);
 			j++;
 		}
