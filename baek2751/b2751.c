@@ -1,141 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#define max 10
-#define MALLOC(p,s)\
-		if(!((p) = malloc(s))){\
-			fprintf(stderr,"Insufficient Memory");\
-			exit(EXIT_FAILURE);}
+#define SWAP(x,y,t)(t=x,x=y,y=t)
 
-typedef struct queue* queuePointer;
-typedef struct queue {
-	int n;
-	queuePointer link;
-}queue;
-
-queuePointer front[max], rear[max]; // 양수들 저장
-
-void add(int i, int n);
-int delete(int i);
-int queueEmpty();
-void queueFull();
-
-queuePointer makeQ(int n);
-
-int radix_sort(int N, int* ary, int k);
-int put(int N, int* ary);
-
-void print(int N, int* ary);
+int* ary;
+void quicksort(int left, int right);
+void print(int N);
 
 int main()
 {
-	int N, M = 0; // N은 개수, M은 최대값 
-	int k = 0; // k는 최대 자리 수
+	int N, k; // k는 랜덤 수
 	scanf("%d", &N);
-	int* ary = malloc(sizeof(int) * N);
-
+	ary = (int*)malloc(sizeof(int) * N);
 	for (int i = 0; i < N; i++)
 	{
+		k = rand() % N;
 		scanf("%d", &ary[i]);
-		if (ary[i] > M)
-			M = ary[i];
 	}
 
-	while (M != 0)
-	{
-		M /= 10;
-		k++;
-	}
-	
-	ary = radix_sort(N, ary, k);
-	print(N, ary);
+	quicksort(0, N);
+
+	print(N);
 
 	return 0;
 }
 
-void add(int i, int n)
+void quicksort(int left, int right)
 {
-	queuePointer temp = makeQ(n);
-
-	if (front[i])
-		rear[i]->link = temp;
-	else
-		front[i] = temp;
-	rear[i] = temp;
-
-}
-int delete(int i)
-{
-	int n;
-	queuePointer temp = front[i];
-	if (!temp)
-		return queueEmpty();
-
-	front[i] = temp->link;
-	return temp->n;
-}
-int queueEmpty()
-{
-	printf("queue is Empty\n");
-}
-void queueFull()
-{
-	printf("queue is full\n");
-}
-
-queuePointer makeQ(int n)
-{
-	queuePointer temp;
-	MALLOC(temp, sizeof(*temp));
-	temp->n = n;
-	temp->link = NULL;
-
-	return temp;
-}
-
-int radix_sort(int N, int* ary, int k)
-{
-	int index; // front랑 rear 몇번째 인덱스에 들어갈지
-	for (int i = 0; i < k; i++)
+	int pivot, i, j, t;
+	
+	if (left < right)
 	{
-		for (int j = 0; j < N; j++)
+		pivot = ary[left];
+		i = left, j = right;
+		do
 		{
-			int a = pow(10, i + 1);
-			int b = pow(10, i);
-			index = (ary[j] % a) / b;
+			do i++; while ((ary[i] < pivot) && (i < right));
+			do j--; while ((ary[j] > pivot) && (j > -1));
+			if (i < j) SWAP(ary[i], ary[j], t);
 
-			add(index, ary[j]);
-		}
-		ary = put(N, ary);
+		} while (i < j);
+		SWAP(ary[left], ary[j], t);
+		quicksort(left, j);
+		quicksort(j + 1, right);
 	}
-	return ary;
 }
-int put(int N, int* ary)
-{
-	queuePointer temp;
-	int j = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		while (1)
-		{
-			temp = front[i];
-			if (!temp)
-				break;
-			else
-			{
-				ary[j++] = temp->n;
-				front[i] = temp->link;
-			}
-		}
-	}
-	return ary;
-}
-
-void print(int N, int* ary)
+void print(int N)
 {
 	for (int i = 0; i < N; i++)
 		printf("%d\n", ary[i]);
 }
-
-
