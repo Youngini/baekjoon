@@ -1,11 +1,13 @@
 import sys
 N = int(sys.stdin.readline())
 ary = [int(x) for x in sys.stdin.readline().split()]
+dic = {}
 S = set(ary)
 ans = list(S)
 ans.sort()
+for i in range(len(ans)):
+    dic[ans[i]] = i
 
 for i in ary:
-    for j in range(len(ans)):
-        if(i == ans[j]):
-            print(j, end=' ')
+    print(dic[i],end = ' ')
+
