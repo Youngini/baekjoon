@@ -6,6 +6,3 @@ for x in sys.stdin.readline().split():ary[x] = 1
 M = int(sys.stdin.readline())
 for x in sys.stdin.readline().split():
     print(ary[x],end = ' ')
-
-
-
